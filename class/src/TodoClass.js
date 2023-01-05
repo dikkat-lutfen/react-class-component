@@ -22,18 +22,29 @@ constructor(props){  // in class component to use props we must use constructor 
 
 }
 
-componentDidMount(){  // instead of use effect you should use componentDidMount
-  axios.get("http://localhost:3636/todo").then(({data})=>{  // our aim is to get data when the page open or start
-    console.log(data);
-    this.setState({todos:data})  //to way to declare state in class component is to declare it inside constructer after super
-    //this.setState({name:"yasemin"})
-  })
+componentDidMount(){  // instead of use effect you should use componentDidMount // our aim is to get data when the page open or start
+  this.getData();
+}
+
+getData(){
+    axios.get("http://localhost:3636/todo").then(({data})=>{  
+        console.log(data);
+        this.setState({todos:data})  //to way to declare state in class component is to declare it inside constructer after super
+        //this.setState({name:"yasemin"})
+      })
 }
 
 add (){  // when we are using function we dont put function at the begining just name of function
-  console.log(this.state.newtodo)
+   axios.post("http://localhost:3636/todo/create", {todo: this.state.newtodo})
+   .then(({data})=>{
+    this.getData()
+   })
+    
 }
 
+del(id){
+    axios.delete("http://localhost:3636/todo" +id  ).then(({data})=>this.getData)
+}
 
   render(){     // class component use render method
     return(     // still return must be used
@@ -47,7 +58,10 @@ add (){  // when we are using function we dont put function at the begining just
         {   //to show todos you can not show directly you should use this.state
            this.state.todos.map((e)=>{
             return(
-                <li key={e.idg}>{e.todo}</li>
+                <div>
+                    <li key={e._id}>{e.todo}</li>
+                    <button onClick={()=>this.delete(e._id)}>delete</button>
+                </div>
             )
            })
         }
