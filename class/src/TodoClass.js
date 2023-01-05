@@ -16,6 +16,9 @@ constructor(props){  // in class component to use props we must use constructor 
      // name :"hakan",
       newtodo:" ",
     }
+    
+    //old old way to bind function
+    this.add = this.add.bind(this)
 
 }
 
@@ -27,12 +30,20 @@ componentDidMount(){  // instead of use effect you should use componentDidMount
   })
 }
 
+add (){  // when we are using function we dont put function at the begining just name of function
+  console.log(this.state.newtodo)
+}
+
 
   render(){     // class component use render method
     return(     // still return must be used
       <div>
-          <input/>
-          <button>press</button>
+          <input onChange={(e)=>{this.setState({newtodo: e.target.value})}}/>
+          <button onClick={()=>{this.add()}}>press</button>    {/* when we are invoke the function we put this at the begining of function name */}
+          {
+          //old way to bind function                 
+          // <button onClick={this.add}>press</button>   //here , there is no callback function     
+          }
         {   //to show todos you can not show directly you should use this.state
            this.state.todos.map((e)=>{
             return(
